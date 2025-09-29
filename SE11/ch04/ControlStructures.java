@@ -2,7 +2,6 @@ package SE11.ch04;
 
 //第４章-制御構造
 public class ControlStructures {
-
     public static void main(String[] args) {
         System.out.println(ControlStructures.class.getPackageName());
         // No1();
