@@ -12,9 +12,10 @@ public class ControlArray {
         // No05();
         // No06();
         // No07();
-        No08();
+        // No08();
         // No09();
         // No10();
+        CloneDemo();
     }
 
     static void No01(){
@@ -200,7 +201,159 @@ public class ControlArray {
     }
     
     static void No10(){
+        int[][] arrayA = { {1,2},{1,2},{1,2,3}} ;
+        int [][] arrayB = arrayA.clone(); // 使ったことはないけど、おそらく参照先をコピーしている
+        //cloneメソッドはインスタンスを複製するらしい。
+        //複製方法が気になるので調べてみる
+        /* どうやらclone()はshallow copyらしい
+         *   clone()によるshallow copy では、下記の手順でコピーを実行する
+         *   １．入れ物として新しいインスタンスを作成して
+         *   ２．コピー元の要素の参照先を値として保持する
+         *   ３．インスタンスへの参照先を変数に渡す
+         *   インスタンスは別モノでも、参照先の値は一緒なので
+         *   コピー元、先のどちらかが変更されると両方のインスタンス内の値(要素)が変更される。
 
+         *  例に上がっている実装方法によるdeep cloneでは、
+         *   参照先を保持するインスタンスからではなく、
+         *  #1{値(オブジェクト)そのものから新しく作成しているため}コピー元との直接の参照はない。
+         *  #1 より正確には、参照先のオブジェクトの内容を元に新しいオブジェクトを作成している
+         */
+        
+         //つまりclone()は新しいインスタンスだけど、参照先をコピーしているので、副作用が発生する可能性がある
+         //だから、clone()を使うときは注意が必要。というか、安易に使うようなものではない
+        int total = 0;
+        for (int[] tmp :  arrayB) {
+            for (int val : tmp) {
+                total += val;
+            }
+        }
+        System.out.println(total); //12が表示される気がするが...
     }
 
+    private static void CloneDemo() {
+            System.out.println("=== Shallow Copy vs Deep Copy ===\n");
+            demonstratePrimitiveArrayClone();
+            demonstrateObjectArrayClone();
+            demonstrateShallowCopyProblem();
+            demonstrateDeepCopySolution();
+    }
+
+    // 1. プリミティブ型配列のclone（問題なし）
+    static void demonstratePrimitiveArrayClone() {
+        System.out.println("--- 1. プリミティブ型配列のclone ---");
+        
+        int[] original = {1, 2, 3};
+        int[] cloned = original.clone();  // shallow copy
+        
+        System.out.println("元の配列: " + java.util.Arrays.toString(original));
+        System.out.println("クローン: " + java.util.Arrays.toString(cloned));
+        
+        // クローンを変更
+        cloned[0] = 999;
+        
+        System.out.println("\ncloned[0] = 999 に変更後:");
+        System.out.println("元の配列: " + java.util.Arrays.toString(original));
+        System.out.println("クローン: " + java.util.Arrays.toString(cloned));
+        System.out.println("→ プリミティブ型は値がコピーされるので影響なし\n");
+    }
+
+    // 2. オブジェクト配列のclone（shallow copyの挙動）
+    static void demonstrateObjectArrayClone() {
+        System.out.println("--- 2. オブジェクト配列のclone（Shallow Copy） ---");
+        
+        Person[] original = {
+            new Person("太郎", 25),
+            new Person("花子", 30)
+        };
+        
+        Person[] cloned = original.clone();  // shallow copy
+        
+        System.out.println("元の配列:");
+        printPersonArray(original);
+        System.out.println("\nクローン:");
+        printPersonArray(cloned);
+        
+        // クローンの配列の要素を変更
+        System.out.println("\n--- cloned[0]の名前を変更 ---");
+        cloned[0].name = "次郎";
+        
+        System.out.println("元の配列:");
+        printPersonArray(original);
+        System.out.println("\nクローン:");
+        printPersonArray(cloned);
+        System.out.println("→ 元の配列も変更されてしまった！（shallow copyの問題）\n");
+    }
+
+    // 3. Shallow Copyの問題を図解
+    static void demonstrateShallowCopyProblem() {
+        System.out.println("--- 3. Shallow Copyの仕組み ---");
+        
+        Person[] original = {new Person("太郎", 25)};
+        Person[] cloned = original.clone();
+        
+        System.out.println("メモリ構造:");
+        System.out.println("original配列 → [参照A]");
+        System.out.println("cloned配列   → [参照A（同じオブジェクトを参照！）]");
+        System.out.println("               ↓");
+        System.out.println("         Person(太郎, 25) ← 両方がこれを指している");
+        
+        System.out.println("\noriginal[0] == cloned[0]: " + (original[0] == cloned[0]));
+        System.out.println("→ 同じオブジェクトを参照しているのでtrue\n");
+    }
+
+    // 4. Deep Copyの実装例
+    static void demonstrateDeepCopySolution() {
+        System.out.println("--- 4. Deep Copyの実装 ---");
+        
+        Person[] original = {
+            new Person("太郎", 25),
+            new Person("花子", 30)
+        };
+        
+        // Deep Copy: 配列だけでなく中身のオブジェクトもコピー
+        Person[] deepCloned = new Person[original.length];
+        for (int i = 0; i < original.length; i++) {
+            deepCloned[i] = new Person(original[i].name, original[i].age);
+        }
+        
+        System.out.println("元の配列:");
+        printPersonArray(original);
+        System.out.println("\nDeep Clone:");
+        printPersonArray(deepCloned);
+        
+        // Deep Cloneの要素を変更
+        System.out.println("\n--- deepCloned[0]の名前を変更 ---");
+        deepCloned[0].name = "次郎";
+        
+        System.out.println("元の配列:");
+        printPersonArray(original);
+        System.out.println("\nDeep Clone:");
+        printPersonArray(deepCloned);
+        System.out.println("→ 元の配列は影響を受けない！（Deep Copyの利点）\n");
+        
+        System.out.println("original[0] == deepCloned[0]: " + (original[0] == deepCloned[0]));
+        System.out.println("→ 別のオブジェクトなのでfalse");
+    }
+        // ヘルパーメソッド
+    static void printPersonArray(Person[] array) {
+        for (int i = 0; i < array.length; i++) {
+            System.out.println("  [" + i + "] " + array[i]);
+        }
+    }
+
+    // Personクラス
+    static class Person {
+        String name;
+        int age;
+        
+        Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+        
+        @Override
+        public String toString() {
+            return "Person(名前=" + name + ", 年齢=" + age + ")";
+        }
+    }
 }
