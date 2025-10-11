@@ -55,4 +55,51 @@ public class Item {
         }
     }
     
+    public static class No20Sample{
+        void No20Sample(){
+            System.out.println("hello.");
+        }
+    }
+
+    public static class No21Sample{
+        No21Sample(){
+            System.out.println("A");
+        }//コンパイルエラーになりそうだが...
+        {
+            System.out.println("B");
+        }
+        //なるほどコンストラクタがどちらかが判断できないから実行エラーになるか？
+        //そうか！{}はclassに対する初期化子で、コンストラクタより先に実行されるのか！
+    }
+
+    public static class No22Sample{
+        static int num;
+        {
+            num = 10;
+        }
+        {//初期化子って複数書けるのか?
+            num = 20;
+        }
+        static { //クラスロード時に実行される これはstatic領域に配置されるfieldだから可能で、
+                //static領域に配置されないfieldではコンパイルエラーになる?
+            num = 20;
+        }
+        //初期化子複数化書ける。同じくstatic初期化子も複数書ける。
+        //ただし、順番は上から順に実行される。
+        public No22Sample(){
+            num = 100;
+        }
+    }
+
+    public static class No23Sample{
+        //戻り値が明記されているからコンストラクタではないメソッドとして扱われる?
+        void No23Sample(){
+            System.out.println("A");
+        }
+        //コンストラクタを定義すると引数が必要ないデフォルトコンストラクタが自動生成されないため
+        //インスタンスを生成時には引数を渡す必要がある。
+        No23Sample(String str){
+            System.out.println(str);
+        }
+    }
 }

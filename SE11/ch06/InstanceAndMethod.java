@@ -186,4 +186,70 @@ public class InstanceAndMethod {
         }
     }
 
+    static void No16(){
+        class LocalSample{
+            int calc(double a, int b){
+                return (int)a + b;
+            }
+            //BとFか?
+            double calc(double a, int b){
+                return a + b;
+            }
+            int calc(int a, double b){
+                return a + (int)b;
+            }
+            //ミスった...
+            //変数名が違うだけで引数の型が一緒だった
+            int calc(double num1 , int num2){
+                return (int)num1 + num2;
+            }
+            //オーバーロードの条件
+            //1. メソッド名が同じ
+            //2. 引数の型または数が異なる
+            //3. 戻り値の型は関係ない
+        }
+    }
+
+    static void No17(){
+        //Mainクラスのmainメソッドを作成するので別のファイルにする
+    }
+
+    static void No18(){
+        class LocalSample{
+            void method(
+                //do something
+            ){}
+            //オーバーロードする条件
+            //この条件だとすべてコンパイルエラーになる?
+            //publicやprotectedはスコープ範囲の違いを表す修飾子なので、同じクラス内でのオーバーロードには関係ない
+            //というか本質的にメソッドが使える状態の上でオーバーロードを考えるので、アクセス修飾子は関係ない
+            public void method(){}
+            protected void method(){}
+            private void method(){}
+        }
+    }
+
+    static void No19(){
+        //サンプルコードなし
+        //コンストラクタの修飾子はなんでも使えそうだけど(public protected private)
+        //クラスの修飾子によっては制限されるよね?
+    }
+
+    static void No20(){
+        //Mainクラスのmainメソッドを作成するので別のファイルにする
+    }
+
+    static void No21(){
+        //Mainクラスのmainメソッドを作成するので別のファイルにする
+    }
+
+    static void No22(){
+        //Mainクラスのmainメソッドを作成するので別のファイルにする
+    }
+
+    static void No23(){
+        //Mainクラスのmainメソッドを作成するので別のファイルにする
+    }
+    
+
 }
