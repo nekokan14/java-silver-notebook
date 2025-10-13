@@ -250,6 +250,31 @@ public class InstanceAndMethod {
     static void No23(){
         //Mainクラスのmainメソッドを作成するので別のファイルにする
     }
+
+    static void No24(){
+        //Mainクラスのmainメソッドを作成するので別のファイルにする
+    }
     
+    static void No25(){
+        //Mainクラスのmainメソッドを作成するので別のファイルにする
+    }
+    
+    static void No26(){
+        //packageが違うため、別のファイルにする
+    }   
+    
+    static void No27(){
+        //packageが違うため、別のファイルにする
+    }
+
+    static void No28(){
+        //Sampleクラスしかないので、別のファイルにする
+        //余談だが、static ファクトリメソッドで実装する場合はこんな感じになる
+        // Item.No28Sample2 s = Item.No28Sample2.getInstance();
+    }
+
+    static void No29(){
+        //Mainクラスのmainメソッドを作成するので別のファイルにする
+    }
 
 }
