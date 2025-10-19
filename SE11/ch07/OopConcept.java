@@ -204,8 +204,144 @@ public class OopConcept {
         }
     }
 
+    static class No12 {
+
+        static class A {
+            String val = "A";
+            void print(){
+                System.out.println(val);
+            }
+        }
+        
+        static class B extends A {
+            String val = "B";
+            // void print(){
+            //     System.out.println(val);
+            // }
+        }
+
+        //スーパークラスとサブクラスで同じ名前のメンバが定義されている場合
+        //次のルールに従ってアクセスされる
+        //１．フィールドを参照した場合には、変数の型で宣言されたほうを使う
+        //２．メソッドを呼び出した場合には、メソッド内の指示に従う
+        //面白いなこれ
+        //Javaについて基礎部分を学んできたことによって、納得感を感じられるところが特に面白い
+        public static class Main {
+            public static void main(String[] args){
+                A a = new A();
+                B b = new B();
+                System.out.println(a.val);
+                System.out.println(b.val);
+                a.print(); 
+                b.print();
+           }
+        }
+    }
+
+    //勉強を始める前だったら難問だったものが、今なら解けるようになっている
+    static class No13 {
+        interface Worker {
+            void work();
+        }
+
+        static class Employee {
+            public void work(){
+                System.out.println("work");
+            }
+        }
+
+        static class Engineer extends Employee implements Worker {}
+
+        public static class Main {
+            public static void main(String[] args){
+                Worker worker = new Engineer();
+                worker.work();
+            }
+        }
+    }
+
+    static class No14{
+
+        public interface Wroker {
+            void work();
+        }
+
+        static class Employee implements Wroker {
+            public void work(){
+                System.out.println("work");
+            }
+
+            public void report(){
+                System.out.println("report");
+            }
+        }
+
+        static class Engineer extends Employee {
+            public void create(){
+                System.out.println("create future");
+            }
+        }
+
+        public static class Main {
+            public static void main(String[] args){
+                Wroker a = new Engineer();
+                Employee b = new Engineer();
+                Engineer c = new Engineer();
+                a.create();
+                b.work();
+                b.create();
+                c.report();
+            }
+        }
+    }
 
 
+    //考えたこともないけど正常に動作するように感じられるな...
+    //ミスった、インターフェースはインスタンス化できないんだった
+    static class No15{
+        public interface A {}
+        public class B implements A {}
+        public class C extends B {}
+        public class D{}
 
+        static class Main {
+            //ポリモーフィズムがどこまで許されるかの例
+            //関係性があるものはポリモーフィズムが許される
+            //関係性は、継承関係か、実現関係のどちらかであるかで判断される
+            //Dは無関係、Aはインターフェース、BはAの実現クラス、CはBのサブクラス(継承関係)
+            public static void main(String[] args) {
+                A[] array = {
+                    new B(),
+                    new C(),
+                    new A(),
+                    new D()
+                };
+            }
+        }
+    }
+
+
+    //サブクラスをスーパークラス型にキャストするアップキャストと
+    //逆にスーパークラスをサブクラス型にキャストするダウンキャストについての問題
+    //インスタンスがどのような差分を持っていいようとも、扱っている型に定義されているものしか使えない
+    static class No16{
+        static class A {}
+        static class B extends A{
+            void hello(){
+                System.out.println("hello");
+            }
+        }
+        public static class Main {
+            public static void main(String[] args){
+                A a = new B();
+                B b = (B)a;
+                b.hello();
+                //これ自動的にキャストされないのか
+                //基本データ型じゃないからかな？
+                //ダウンキャストだから、スーパークラスであるAはBを認識できないから自動的にキャストされない
+                B b2 = a;
+            }
+        }
+    }
 }  
 
