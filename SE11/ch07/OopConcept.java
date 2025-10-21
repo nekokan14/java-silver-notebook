@@ -343,5 +343,141 @@ public class OopConcept {
             }
         }
     }
+
+    static class No17{
+        static class A {
+                void hello(){
+                    System.out.println("A");
+                }
+            }
+        
+        static class B extends A {
+            void hello(){
+                System.out.println("B");
+            }
+        }
+
+
+        public static class Main{
+            public static void main(String[] args){
+                A a = new A();
+                B b = (B)a; // キャスト式はプログラマーが明示的に型を保証するもの
+                            // そのため、型が不一致の場合はコンパイルエラーを出してくれない。
+                b.hello();
+            }
+        }
+    }
+
+    static class No18{
+        static class Sample {
+            private int num;
+            public Sample(int num){
+                // this.num = num;
+                // setNum(num);
+                num = num;
+                System.out.println("Constructor num: " + this.num + " args num: " + num);
+            }
+
+            public int getNum(){
+                return num;
+            }  
+
+            public void setNum(int num ){
+                this.num = num;
+            }
+        }
+
+        static class Main {
+            public static void main(String[] args){
+                Sample s = new Sample(10);
+                System.out.println(s.getNum());
+            }
+        }
+    }
+
+    static class No19{
+        static class Parent {
+            String name ;
+            String getName(){
+                return this.name;
+            }
+        }
+
+        public static class Child extends Parent{
+            String name;
+            @Override
+            String getName(){
+                System.out.println("Child's name: " + this.name);
+                return super.name;
+            }
+        }
+
+        //nullじゃね？
+        public static class Main {
+            public static void main(String[] args){
+                Child child = new Child();
+                child.name = "sample";
+                System.out.println(child.getName());//やっぱりnullだった
+            }
+        }
+    }
+
+
+    static class No20{
+
+        static class A{
+            public A(){
+                System.out.println("A");
+            }
+        }
+
+        static class B extends A{
+            public B(){
+                System.out.println("B");
+            }
+        }
+        
+        static class Main{
+            public static void main(String[] args){
+                A a = new B();
+                //A -> B の順で出力される
+                //Bのコンストラクタ内でsuper()が暗黙的に呼ばれるため
+            }
+        }
+    }
+
+    static class No21{
+
+        static class Parent{
+            public Parent(){
+                System.out.println("A");
+            }
+            public Parent(String val){
+                this();
+                System.out.println(val);
+            }
+        }
+
+        static class Child extends Parent{
+            public Child(){
+                super("B");
+                System.out.println("C");
+            }
+
+            public Child(String val){
+                this();
+                System.out.println(val);
+            }
+        }
+
+        //これABCDでしょXD
+        public static class Main {
+            public static void main(String[] args){
+                new Child("D");
+            }
+        } 
+    }
+
+
 }  
 
