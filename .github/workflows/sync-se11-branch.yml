@@ -1,0 +1,34 @@
+name: Sync SE11 branch with main
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  sync-se11:
+    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'se11'
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Sync SE11 branch with main
+        run: |
+          git fetch origin main
+          git checkout se11
+          git merge origin/main --no-edit
+          git push origin se11
