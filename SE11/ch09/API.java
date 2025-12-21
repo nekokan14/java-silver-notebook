@@ -1,11 +1,17 @@
 package SE11.ch09;
+import java.lang.reflect.Array;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Consumer;
+
+import javax.xml.crypto.dsig.spec.HMACParameterSpec;
 
 import SE11.ch06.Item;
 
@@ -361,6 +367,80 @@ public class API {
                 //mismatchメソッドは2つの配列を比較し、最初に発見した異なる要素のインデックスを返す
                 //インデックスを返すのでbooleanではなくintが戻り値となる
                 //インデックスは0から始まるため、不一致が見つからなかった場合は-1が返される
+            }
+        }
+    }
+
+    static class No16{
+        public static class Main{
+            public static void main(String[] args){
+                String[] a = {"B","A"};
+                String[] b = {"A","B"};
+                System.out.println(Arrays.compare(a, b));
+                //compareメソッドは2つの配列をUnicodeの辞書順で比較し、最初に異なる要素の比較結果を返す
+                //aの要素がbの要素よりも
+                //-1:前にある場合は負の値
+                // 1:後ろにある場合は正の値
+                // 0:同じ場合は0を返す
+            }
+        }
+    }
+
+    static class No17{
+        public static void main (String[] args){
+            List<String> list = new ArrayList<>(Arrays.asList(new String[]{"A","B","C"}));
+            list.removeIf((String s) ->s.equals("B"));
+            System.out.println(list);
+            //宣言的だからわかりやすい
+            //A,Cが出力される
+        }
+    }
+
+    static class No18{
+        public static void main (String[] args ){
+            List<String> list = List.of("A","B","C");
+            list.forEach(System.out::println);
+            //この書き方ができるようになりたいな
+            //必要な情報だけ書いてる感じがする
+        }
+    }
+
+    static class No19{
+        public static void main (String[] args){
+            Map<Integer,Item> map = new HashMap<Integer,Item>();
+            map.put(1,new Item(1,"A"));
+            map.put(2,new Item(2,"B"));
+            map.put(3,new Item(3,"C"));
+            map.put(1,new Item(1,"A"));
+            map.put(null,new Item(0,"default"));
+            System.out.println(map.size());
+            //putは上書きもできるので、キーが重複した場合は上書きされる
+            //KeyがIntegerなので、nullも格納できる
+            //よって、サイズは4になる
+
+            //Keyがnull許容するのはジェネリクス型の仕様。
+            //ただし、HashMapを実装することによって動作上でもnullキーを許容しているだけで
+            //(nullならハッシュコードが0にしている)
+            //全てのMap実装がnullキーを許容しているわけではない
+            //例えば、TreeMapやHashtableはnullキーを許容しない
+            
+            //コンパイルエラーとはならないが、実行時にnullのkeyをputするとNullPointerExceptionが発生する
+            Map<Integer,Item> dummy = new TreeMap<Integer,Item>();
+        }
+
+        public static class Item {
+            private int id;
+            private String name;
+            public Item(int id, String name){
+                this.id = id;
+                this.name = name;
+            }
+
+            int getId(){
+                return id;
+            }
+            String getName(){
+                return name;
             }
         }
     }
